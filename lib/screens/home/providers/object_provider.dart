@@ -1,9 +1,10 @@
 import 'dart:async';
+
 import 'package:detailsofprovider_course/screens/home/classes/base_object.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-class ObjectProvider extends ChangeNotifier{
+class ObjectProvider extends ChangeNotifier {
   late String id;
   late CheapObject _cheapObject;
   late StreamSubscription _cheapObjectSubscription;
@@ -13,18 +14,20 @@ class ObjectProvider extends ChangeNotifier{
   CheapObject get cheapObject => _cheapObject;
   ExpensiveObject get expensiveObject => _expensiveObject;
 
-  ObjectProvider() :
-        id = const Uuid().v4(),
+  ObjectProvider()
+      : id = const Uuid().v4(),
         _cheapObject = CheapObject(),
-        _expensiveObject = ExpensiveObject();
+        _expensiveObject = ExpensiveObject() {
+    start();
+  }
 
   @override
-  void notifyListeners(){
+  void notifyListeners() {
     id = const Uuid().v4();
     super.notifyListeners();
   }
 
-  void start(){
+  void start() {
     _cheapObjectSubscription = Stream.periodic(
       const Duration(seconds: 1),
     ).listen((_) {
@@ -39,7 +42,7 @@ class ObjectProvider extends ChangeNotifier{
     });
   }
 
-  void stop(){
+  void stop() {
     _cheapObjectSubscription.cancel();
     _expensiveObjectSubscription.cancel();
   }
